@@ -1,6 +1,7 @@
 /* eslint-disable camelcase, @typescript-eslint/no-use-before-define */
 import type {GeoPackageLoaderOptions} from '../geopackage-loader';
-import initSqlJs, {SqlJsStatic, Database, Statement} from 'sql.js';
+import {SqlJsStatic, Database, Statement} from 'sql.js';
+const initSqlJs = import('../libs/sql-wasm.js');
 import {WKBLoader} from '@loaders.gl/wkt';
 import {
   Schema,
@@ -92,14 +93,15 @@ export default async function parseGeoPackage(
  * @return SQL.js database object
  */
 async function loadDatabase(arrayBuffer: ArrayBuffer, sqlJsCDN: string | null): Promise<Database> {
+  const {default: initSql} = await initSqlJs;
   // In Node, `locateFile` must not be passed
   let SQL: SqlJsStatic;
   if (sqlJsCDN) {
-    SQL = await initSqlJs({
+    SQL = await initSql({
       locateFile: (file) => `${sqlJsCDN}${file}`
     });
   } else {
-    SQL = await initSqlJs();
+    SQL = await initSql();
   }
   return new SQL.Database(new Uint8Array(arrayBuffer));
 }

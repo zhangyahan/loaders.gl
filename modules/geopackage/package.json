@@ -14,6 +14,7 @@
     "sql",
     "GeoPackage"
   ],
+  "type": "module",
   "types": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -23,6 +24,11 @@
     "dist",
     "README.md"
   ],
+  "scripts": {
+    "pre-build": "npm run build-worker --env.dev && npm run build-bundle",
+    "build-worker": "webpack --entry ./src/workers/geopackage-worker.ts --output ./dist/geopackage-worker.js --config ../../scripts/webpack/worker.js",
+    "build-bundle": "webpack --display=minimal --config ../../scripts/webpack/bundle.js"
+  },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
     "@loaders.gl/gis": "3.0.1",
