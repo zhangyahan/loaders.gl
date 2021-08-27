@@ -43,3 +43,47 @@ function initializeBasisModule(BasisModule, wasmBinary) {
     });
   });
 }
+
+let loadBasisEncoderPromise;
+
+export async function loadBasisEncoderModule(options) {
+  const modules = options.modules || {};
+  if (modules.basisEncoder) {
+    return modules.basisEncoder;
+  }
+
+  loadBasisEncoderPromise = loadBasisEncoderPromise || loadBasisEncoder(options);
+  return await loadBasisEncoderPromise;
+}
+
+async function loadBasisEncoder(options) {
+  let BASIS_ENCODER = null;
+  let wasmBinary = null;
+
+  [BASIS_ENCODER, wasmBinary] = await Promise.all([
+    await loadLibrary('basis_encoder.js', 'textures', options),
+    await loadLibrary('basis_encoder.wasm', 'textures', options)
+  ]);
+
+  // Depends on how import happened...
+  // @ts-ignore TS2339: Property does not exist on type
+  BASIS_ENCODER = BASIS_ENCODER || globalThis.BASIS;
+  return await initializeBasisEncoderModule(BASIS_ENCODER, wasmBinary);
+}
+
+function initializeBasisEncoderModule(BasisEncoderModule, wasmBinary) {
+  const options: {wasmBinary?} = {};
+
+  if (wasmBinary) {
+    options.wasmBinary = wasmBinary;
+  }
+
+  return new Promise((resolve) => {
+    // if you try to return BasisModule the browser crashes!
+    BasisEncoderModule(options).then((module) => {
+      const {KTX2File, initializeBasis} = module;
+      initializeBasis();
+      resolve({KTX2File});
+    });
+  });
+}

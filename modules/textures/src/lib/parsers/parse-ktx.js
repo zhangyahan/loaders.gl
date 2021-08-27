@@ -1,6 +1,7 @@
 import {read} from 'ktx-parse';
 import {extractMipmapImages} from '../utils/extract-mipmap-images';
 import {mapVkFormatToWebGL} from '../utils/ktx-format-helper';
+import {loadBasisEncoderModule} from './basis-module-loader';
 
 const KTX2_ID = [
   // '´', 'K', 'T', 'X', '2', '0', 'ª', '\r', '\n', '\x1A', '\n'
@@ -27,19 +28,48 @@ export function isKTX(data) {
   return !notKTX;
 }
 
-export function parseKTX(arrayBuffer) {
+export async function parseKTX(arrayBuffer) {
+  const {KTX2File} = await loadBasisEncoderModule({});
   const uint8Array = new Uint8Array(arrayBuffer);
-  const ktx = read(uint8Array);
-  const mipMapLevels = Math.max(1, ktx.levels.length);
-  const width = ktx.pixelWidth;
-  const height = ktx.pixelHeight;
-  const internalFormat = mapVkFormatToWebGL(ktx.vkFormat);
+  const ktx2File = new KTX2File(uint8Array);
+  if (!ktx2File.isValid())
+  {
+  	console.warn('Invalid or unsupported .ktx2 file');
+    ktx2File.close();
+    ktx2File.delete();
+    return null;
+  }
 
-  return extractMipmapImages(ktx.levels, {
-    mipMapLevels,
+  const width = ktx2File.getWidth();
+  const height = ktx2File.getHeight();
+  const layers = ktx2File.getLayers();
+  const levels = ktx2File.getLevels();
+  const faces = ktx2File.getFaces();
+  const has_alpha = ktx2File.getHasAlpha();
+  const header = ktx2File.getHeader();
+
+  const internalFormat = header.vkFormat;
+
+  if (!width || !height || !levels) {
+    console.warn('Invalid .ktx2 file');
+    ktx2File.close();
+    ktx2File.delete();
+    return null;
+  }
+
+  console.log('Test')
+
+  // const ktx = read(uint8Array);
+  // const mipMapLevels = Math.max(1, ktx.levels.length);
+  // const width = ktx.pixelWidth;
+  // const height = ktx.pixelHeight;
+  // const internalFormat = mapVkFormatToWebGL(ktx.vkFormat);
+
+  return extractMipmapImages(levels, {
+    levels,
     width,
     height,
-    sizeFunction: (level) => level.uncompressedByteLength,
+    // sizeFunction: (level) => level.uncompressedByteLength,
     internalFormat
   });
 }

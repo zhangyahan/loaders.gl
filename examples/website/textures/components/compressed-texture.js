@@ -76,6 +76,8 @@ const {
 const TEXTURES_BASE_URL =
   'https://raw.githubusercontent.com/visgl/loaders.gl/master/modules/textures/test/data/';
 
+const TEMP_PATH = '../../../../modules/textures/test/data/';
+
 const TextureButton = styled.button`
   height: 256px;
   width: 256px;
@@ -195,7 +197,7 @@ export default class CompressedTexture extends PureComponent {
         BasisLoader,
         ImageLoader
       ]);
-      const result = loader && (await load(arrayBuffer, loader, loadOptions));
+      const result = loader && (await load(arrayBuffer, loader, {...loadOptions, worker: false}));
 
       this.addStat('File Size', Math.floor(length / 1024), 'Kb');
 
@@ -237,7 +239,7 @@ export default class CompressedTexture extends PureComponent {
       length = image.size;
       src = image.name;
     } else {
-      src = `${TEXTURES_BASE_URL}${image.src}`;
+      src = `${TEMP_PATH}${image.src}`;
       const response = await fetchFile(src);
       arrayBuffer = await response.arrayBuffer();
       length = arrayBuffer.byteLength;
