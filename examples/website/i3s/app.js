@@ -255,9 +255,10 @@ export default class App extends PureComponent {
             onTileLoad: () => this._updateStatWidgets(),
             onTileUnload: () => this._updateStatWidgets(),
             pickable: this._isLayerPickable(),
+            autoHighlight: true,
             loadOptions,
-            highlightedObjectIndex:
-              sublayer.url === selectedTilesetBasePath ? selectedFeatureIndex : -1
+            // highlightedObjectIndex:
+            //   sublayer.url === selectedTilesetBasePath ? selectedFeatureIndex : -1
           })
       );
 
