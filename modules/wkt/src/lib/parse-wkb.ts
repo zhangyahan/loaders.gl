@@ -6,6 +6,8 @@ import type {
   BinaryPolygonGeometry
 } from '@loaders.gl/schema';
 
+import {WKB} from './utils/wkb-types';
+
 const NUM_DIMENSIONS = {
   0: 2, // 2D
   1: 3, // 3D (Z)
@@ -30,28 +32,28 @@ export default function parseWKB(arrayBuffer: ArrayBuffer): BinaryGeometry {
   const dimension = NUM_DIMENSIONS[type];
 
   switch (geometryType) {
-    case 1:
+    case WKB.Point:
       const point = parsePoint(view, offset, dimension, littleEndian);
       return point.geometry;
-    case 2:
+    case WKB.LineString:
       const line = parseLineString(view, offset, dimension, littleEndian);
       return line.geometry;
-    case 3:
+    case WKB.Polygon:
       const polygon = parsePolygon(view, offset, dimension, littleEndian);
       return polygon.geometry;
-    case 4:
+    case WKB.MultiPoint:
       const multiPoint = parseMultiPoint(view, offset, dimension, littleEndian);
       multiPoint.type = 'Point';
       return multiPoint;
-    case 5:
+    case WKB.MultiLineString:
       const multiLine = parseMultiLineString(view, offset, dimension, littleEndian);
       multiLine.type = 'LineString';
       return multiLine;
-    case 6:
+    case WKB.MultiPolygon:
       const multiPolygon = parseMultiPolygon(view, offset, dimension, littleEndian);
       multiPolygon.type = 'Polygon';
       return multiPolygon;
-    // case 7:
+    // case WKB.GeometryCollection:
     // TODO: handle GeometryCollections
     // return parseGeometryCollection(view, offset, dimension, littleEndian);
     default:
