@@ -1,6 +1,7 @@
 import type {Loader, LoaderWithParser} from '@loaders.gl/loader-utils';
 import {VERSION} from './lib/utils/version';
 import parseWKB from './lib/parse-wkb';
+import {isWKB} from './lib/parse-wkb-header';
 
 /**
  * Worker loader for WKB (Well-Known Binary)
@@ -14,6 +15,7 @@ export const WKBWorkerLoader = {
   category: 'geometry',
   extensions: ['wkb'],
   mimeTypes: [],
+  tests: [isWKB],
   options: {
     wkb: {}
   }
