@@ -313,7 +313,11 @@ export default class Tileset3D {
     this.frameStateData = {};
     this.lastUpdatedVieports = null;
 
-    this._queryParams = {};
+    if (this.loadOptions['3d-tiles'] && 'queryParams' in this.loadOptions['3d-tiles']) {
+      this._queryParams = {...this.loadOptions['3d-tiles'].queryParams};
+    } else {
+      this._queryParams = {};
+    }
     this._queryParamsString = '';
 
     // METRICS

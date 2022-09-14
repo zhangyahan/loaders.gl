@@ -259,6 +259,16 @@ test('Tileset3D#hasExtension returns true if the tileset JSON file uses the spec
   t.end();
 });
 
+test.only('Tileset3D#extracts queryParams from loadOptions', async (t) => {
+  const tilesetJson = await load(TILESET_URL, Tiles3DLoader);
+  const tileset = new Tileset3D(tilesetJson, {
+    loadOptions: {'3d-tiles': {queryParams: {a: 123, b: 'abc'}}}
+  });
+
+  t.equals(tileset.queryParams, '?a=123&b=abc&v=1.2.3');
+  t.end();
+});
+
 test('Tileset3D#one viewport traversal', async (t) => {
   t.plan(1);
   const tilesetJson = await load(TILESET_URL, Tiles3DLoader);

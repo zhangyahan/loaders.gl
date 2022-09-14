@@ -22,7 +22,8 @@ export const Tiles3DLoader: LoaderWithParser = {
       loadGLTF: true,
       decodeQuantizedPositions: false,
       isTileset: 'auto',
-      assetGltfUpAxis: null
+      assetGltfUpAxis: null,
+      queryParams: null
     }
   }
 };
