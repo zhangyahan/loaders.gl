@@ -313,11 +313,7 @@ export default class Tileset3D {
     this.frameStateData = {};
     this.lastUpdatedVieports = null;
 
-    if (this.loadOptions['3d-tiles'] && 'queryParams' in this.loadOptions['3d-tiles']) {
-      this._queryParams = {...this.loadOptions['3d-tiles'].queryParams};
-    } else {
-      this._queryParams = {};
-    }
+    this._queryParams = {};
     this._queryParamsString = '';
 
     // METRICS
@@ -885,6 +881,10 @@ export default class Tileset3D {
   }
 
   _initializeTiles3DTileset(tilesetJson) {
+    if (this.loadOptions['3d-tiles'] && 'queryParams' in this.loadOptions['3d-tiles']) {
+      this._queryParams = {...this._queryParams, ...this.loadOptions['3d-tiles'].queryParams};
+    }
+
     this.asset = tilesetJson.asset;
     if (!this.asset) {
       throw new Error('Tileset must have an asset property.');

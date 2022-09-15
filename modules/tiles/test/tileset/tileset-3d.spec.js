@@ -259,7 +259,7 @@ test('Tileset3D#hasExtension returns true if the tileset JSON file uses the spec
   t.end();
 });
 
-test.only('Tileset3D#extracts queryParams from loadOptions', async (t) => {
+test('Tileset3D#extracts queryParams from loadOptions', async (t) => {
   const tilesetJson = await load(TILESET_URL, Tiles3DLoader);
   const tileset = new Tileset3D(tilesetJson, {
     loadOptions: {'3d-tiles': {queryParams: {a: 123, b: 'abc'}}}
