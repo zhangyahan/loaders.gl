@@ -36,7 +36,7 @@ export async function parse(
   options = options || {};
 
   // Extract a url for auto detection
-  const {url} = getResourceUrlAndType(data);
+  const {url, queryString} = getResourceUrlAndType(data);
 
   // Chooses a loader (and normalizes it)
   // Also use any loaders in the context, new loaders take priority
@@ -53,7 +53,11 @@ export async function parse(
   options = normalizeOptions(options, loader, candidateLoaders, url);
 
   // Get a context (if already present, will be unchanged)
-  context = getLoaderContext({url, parse, loaders: candidateLoaders}, options, context);
+  context = getLoaderContext(
+    {url, queryString, parse, loaders: candidateLoaders},
+    options,
+    context
+  );
 
   return await parseWithLoader(loader, data, options, context);
 }

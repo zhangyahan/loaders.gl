@@ -52,12 +52,15 @@ export function parseSync(
   options = normalizeOptions(options, loader, candidateLoaders);
 
   // Extract a url for auto detection
-  const {url} = getResourceUrlAndType(data);
+  const {url, queryString} = getResourceUrlAndType(data);
 
   const parse = () => {
     throw new Error('parseSync called parse');
   };
-  context = getLoaderContext({url, parseSync, parse, loaders: loaders as Loader[]}, options);
+  context = getLoaderContext(
+    {url, queryString, parseSync, parse, loaders: loaders as Loader[]},
+    options
+  );
 
   return parseWithLoaderSync(loader as LoaderWithParser, data, options, context);
 }

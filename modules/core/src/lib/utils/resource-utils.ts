@@ -11,13 +11,19 @@ const QUERY_STRING_PATTERN = /\?.*/;
  *
  * @todo string parameters are assumed to be URLs
  */
-export function getResourceUrlAndType(resource: any): {url: string; type: string} {
+export function getResourceUrlAndType(resource: any): {
+  url: string;
+  queryString?: string;
+  type: string;
+} {
   // If resource is a response, it contains the information directly
   if (isResponse(resource)) {
     const url = stripQueryString(resource.url || '');
+    const queryString = extractQueryString(resource.url || '');
     const contentTypeHeader = resource.headers.get('content-type') || '';
     return {
       url,
+      queryString,
       type: parseMIMEType(contentTypeHeader) || parseMIMETypeFromURL(url)
     };
   }
@@ -28,6 +34,7 @@ export function getResourceUrlAndType(resource: any): {url: string; type: string
       // File objects have a "name" property. Blob objects don't have any
       // url (name) information
       url: stripQueryString(resource.name || ''),
+      queryString: extractQueryString(resource.name || ''),
       type: resource.type || ''
     };
   }
@@ -36,6 +43,7 @@ export function getResourceUrlAndType(resource: any): {url: string; type: string
     return {
       // TODO this could mess up data URL but it doesn't matter as it is just used for inference
       url: stripQueryString(resource),
+      queryString: extractQueryString(resource || ''),
       // If a data url
       type: parseMIMETypeFromURL(resource)
     };
@@ -75,6 +83,11 @@ export function getResourceContentLength(resource: any): number {
   return -1;
 }
 
-function stripQueryString(url) {
+function extractQueryString(url): string {
+  const matches = url.match(QUERY_STRING_PATTERN);
+  return matches ? matches[0] : undefined;
+}
+
+function stripQueryString(url): string {
   return url.replace(QUERY_STRING_PATTERN, '');
 }

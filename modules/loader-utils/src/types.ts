@@ -195,6 +195,7 @@ export type Writer = {
 export type LoaderContext = {
   loaders?: Loader[] | null;
   url?: string;
+  queryString?: string;
 
   fetch: typeof fetch;
   response?: Response;

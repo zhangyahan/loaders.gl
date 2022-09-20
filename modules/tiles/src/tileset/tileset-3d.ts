@@ -881,8 +881,10 @@ export default class Tileset3D {
   }
 
   _initializeTiles3DTileset(tilesetJson) {
-    if (this.loadOptions['3d-tiles'] && 'queryParams' in this.loadOptions['3d-tiles']) {
-      this._queryParams = {...this._queryParams, ...this.loadOptions['3d-tiles'].queryParams};
+    if (tilesetJson.queryString) {
+      const searchParams = new URLSearchParams(tilesetJson.queryString);
+      const queryParams = Object.fromEntries(searchParams.entries());
+      this._queryParams = {...this._queryParams, ...queryParams};
     }
 
     this.asset = tilesetJson.asset;

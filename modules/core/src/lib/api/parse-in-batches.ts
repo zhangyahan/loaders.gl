@@ -43,7 +43,7 @@ export async function parseInBatches(
   options = options || {};
 
   // Extract a url for auto detection
-  const {url} = getResourceUrlAndType(data);
+  const {url, queryString} = getResourceUrlAndType(data);
 
   // Chooses a loader and normalizes it
   // Note - only uses URL and contentType for streams and iterator inputs
@@ -60,7 +60,7 @@ export async function parseInBatches(
   // @ts-ignore
   context = getLoaderContext(
     // @ts-ignore
-    {url, parseInBatches, parse, loaders: loaders as Loader[]},
+    {url, queryString, parseInBatches, parse, loaders: loaders as Loader[]},
     options,
     context
   );
