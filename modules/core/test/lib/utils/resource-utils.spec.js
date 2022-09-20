@@ -29,7 +29,8 @@ test('getResourceUrlAndType', (t) => {
 
   t.deepEqual(getResourceUrlAndType(response), {
     type: 'application/json',
-    url: 'https://abc.com/file.json'
+    url: 'https://abc.com/file.json',
+    queryString: '?variable=value'
   });
 
   t.end();
