@@ -21,6 +21,7 @@
 
 See [roadmap](./roadmap) for more details on planned development.
 
+<<<<<<< HEAD
 ## v3.4 (In Development)
 
 Target Release Date: April, 2023.
@@ -49,6 +50,17 @@ Support for additional OGC Web Services standards:
   - [`CSWRecordsLoader`](modules/json/docs/api-reference/csw-records-loader)
 
 ## v3.3
+=======
+## v4.0 (In development)
+
+Release Date: TBD, Q1-2022
+
+**@loaders.gl/arrow**
+
+- Now uses `apache-arrow` v9
+
+## v3.3 (In Development)
+>>>>>>> 880c64709 (chore(arrow): bump apache-arrow to 9.0.0. Temporarily disable arrow workers. (#2276))
 
 Release Date: February 17, 2023.
 
@@ -132,7 +144,6 @@ Target Release Date: May 2022.
 **@loaders.gl/textures**
 
 - Upgrade `basis_universal` libraries to [v1.16.3](https://github.com/BinomialLLC/basis_universal/releases/tag/1.16.3).
-
 ## v3.1
 
 Release Date: Dec 7, 2021.
