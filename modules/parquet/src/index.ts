@@ -34,7 +34,8 @@ export {ParquetSchema} from './parquetjs/schema/schema';
 export {ParquetReader} from './parquetjs/parser/parquet-reader';
 export {ParquetEncoder} from './parquetjs/encoder/parquet-encoder';
 
-export {convertParquetToArrowSchema} from './lib/convert-schema';
+// export {convertParquetToArrowSchema} from './lib/convert-schema';
+export {convertParquetSchema} from './lib/convert-schema';
 
 // TESTS
 export const _typecheckParquetLoader: LoaderWithParser = ParquetLoader;
